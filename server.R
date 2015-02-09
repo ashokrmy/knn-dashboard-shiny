@@ -47,7 +47,17 @@ shinyServer(function(input, output) {
          )  
          
        })
-     
-     
    })
+  observe({output$feature <- renderText({ (input$featureDisplay) })
+         input_feature <- prop("x",as.symbol(input$featureDisplay))
+         
+         
+         data.frame(train.X, heart.disease = train.Y) %>%
+           ggvis(x = input_feature,fill = ~factor(heart.disease))%>%
+           layer_densities()%>%
+         bind_shiny("ggvis", "ggvis_ui")
+           
+        
+  })
+   
 })

@@ -1,5 +1,5 @@
 rm(list = ls())
-library(ggplot2)
+library(ggvis)
 library(dplyr)
 library(class)
 library(caret)

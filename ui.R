@@ -23,7 +23,7 @@ library(shiny)
 #                    tabPanel("Summary",
 #                             verbatimTextOutput("summary")
 #                    )
-shinyUI(navbarPage("Navbar!",
+shinyUI(navbarPage("KNN - UCI Heart Disease Data",
                    tabPanel("Results",
 
                               # Application title
@@ -65,6 +65,23 @@ shinyUI(navbarPage("Navbar!",
                               # Show a plot of the generated distribution
                               mainPanel(
                                 plotOutput("distPlot")
+                              )
+                            )),
+                   
+                   
+                   tabPanel("GGVIS",
+                            sidebarLayout(
+                              sidebarPanel(
+                                selectInput("featureDisplay", label = h3("Dataset Features"), 
+                                                   choices = feature.list)
+                                
+                              ),
+                              
+                              # Show a plot of the generated distribution
+                              mainPanel(
+                                uiOutput("ggvis_ui"),
+                                ggvisOutput("ggvis"),
+                                verbatimTextOutput("feature")
                               )
                             ))
 ))
