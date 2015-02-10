@@ -48,15 +48,22 @@ shinyServer(function(input, output) {
          
        })
    })
-  observe({output$feature <- renderText({ (input$featureDisplay) })
-         input_feature <- prop("x",as.symbol(input$featureDisplay))
+  observe({
+    input_feature_x <- prop("x",as.symbol(input$featureDisplay_x))
+    input_feature_y <- prop("y",as.symbol(input$featureDisplay_y))
+    
          
-         
-         data.frame(train.X, heart.disease = train.Y) %>%
-           ggvis(x = input_feature,fill = ~factor(heart.disease))%>%
-           layer_densities()%>%
+         data.frame(ds) %>%
+           ggvis(x = input_feature_x, y = input_feature_y, 
+                 fill = ~factor(num))%>%
+           layer_points()%>%
+      add_legend("fill",title = "Heart Disease", values = c("negative",  "positive")) %>%
          bind_shiny("ggvis", "ggvis_ui")
-           
+#       data.frame(ds) %>%
+#         ggvis(x = input_feature_x, fill = ~factor(num))%>%
+#         group_by(num)%>%
+#           layer_histograms(stack = T)%>%
+#         bind_shiny("ggvis", "ggvis_ui")
         
   })
    

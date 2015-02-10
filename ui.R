@@ -72,9 +72,10 @@ shinyUI(navbarPage("KNN - UCI Heart Disease Data",
                    tabPanel("GGVIS",
                             sidebarLayout(
                               sidebarPanel(
-                                selectInput("featureDisplay", label = h3("Dataset Features"), 
-                                                   choices = feature.list)
-                                
+                                selectInput("featureDisplay_x", label = h3("X axis"), 
+                                                   choices = feature.list),
+                                selectInput("featureDisplay_y", label = h3("Y axis"), 
+                                            choices = feature.list)
                               ),
                               
                               # Show a plot of the generated distribution
