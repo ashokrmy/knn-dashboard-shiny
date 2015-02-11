@@ -21,10 +21,10 @@ shinyServer(function(input, output) {
   output$confusionMatrix <- renderDataTable({
     # modify this to show title - confusion matrix
     # /false positive/positive false negative/negative
-    true.positive    <- sum(knn.pred == 1 & test.Y == 1)
-    false.positive   <- sum(test.Y == 1) - true.positive
-    true.negative    <- sum(knn.pred == 0 & test.Y == 0)
-    false.negative   <- sum(test.Y == 0) - true.negative
+    true.positive    <- sum(knn.pred == "positive" & test.Y == "positive")
+    false.positive   <- sum(test.Y == "positive") - true.positive
+    true.negative    <- sum(knn.pred == "negative" & test.Y == "negative")
+    false.negative   <- sum(test.Y == "negative") - true.negative
     row.names <- c("Prediction - FALSE", "Prediction - TRUE" )
     col.names <- c("Reference - FALSE", "Reference - TRUE")
     cbind(Outcome = row.names, as.data.frame(matrix( 
@@ -49,12 +49,14 @@ shinyServer(function(input, output) {
        })
    })
   observe({output$feature <- renderText({ (input$featureDisplay) })
-         input_feature <- prop("x",as.symbol(input$featureDisplay))
+           input_feature_x <- prop("x",as.symbol(input$featureDisplay_x))
+           input_feature_y <- prop("y",as.symbol(input$featureDisplay_y))
+           
          
-         
-         data.frame(train.X, heart.disease = train.Y) %>%
-           ggvis(x = input_feature,fill = ~factor(heart.disease))%>%
-           layer_densities()%>%
+         data.frame(ds) %>%
+           ggvis(x = input_feature_x,input_feature_y, fill = ~factor(num ))%>%
+           layer_points()%>%
+           add_legend("fill", title = "Heart Disease" )%>%
          bind_shiny("ggvis", "ggvis_ui")
            
         

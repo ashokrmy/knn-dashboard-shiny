@@ -72,8 +72,10 @@ shinyUI(navbarPage("KNN - UCI Heart Disease Data",
                    tabPanel("GGVIS",
                             sidebarLayout(
                               sidebarPanel(
-                                selectInput("featureDisplay", label = h3("Dataset Features"), 
-                                                   choices = feature.list)
+                                selectInput("featureDisplay_x", label = h3("X-Axis"), 
+                                            choices = feature.list),
+                                selectInput("featureDisplay_y", label = h3("Y-Axis"), 
+                                            choices = feature.list)
                                 
                               ),
                               

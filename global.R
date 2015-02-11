@@ -29,7 +29,7 @@ ds <- na.omit(ds)
 # all values of num > 0 are cases of heart disease 
 # as per the data descriptions at the uci repository
 ds$num[ds$num > 0] <- 1
-
+ds$num <- factor(ds$num, levels = c(0,1), labels = c("negative", "positive"))
 # standardize/normalize the data
 standardized.X <- scale(ds[,-14])
 set.seed(55)
