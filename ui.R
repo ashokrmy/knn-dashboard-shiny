@@ -6,22 +6,7 @@
 
 library(shiny)
 
-# shinyUI(navbarPage("Navbar!",
-#                    tabPanel("Plot",
-#                             sidebarLayout(
-#                               sidebarPanel(
-#                                 radioButtons("plotType", "Plot type",
-#                                              c("Scatter"="p", "Line"="l")
-#                                 )
-#                               ),
-#                               mainPanel(
-#                                 plotOutput("plot")
-#                               )
-#                             )
-#                    ),
-#                    tabPanel("Summary",
-#                             verbatimTextOutput("summary")
-#                    )
+
 shinyUI(navbarPage("KNN - UCI Heart Disease Data",
                    tabPanel("Results",
                             
@@ -87,5 +72,13 @@ shinyUI(navbarPage("KNN - UCI Heart Disease Data",
                                 ggvisOutput("ggvis"),
                                 verbatimTextOutput("feature")
                               )
-                            ))
+                            )),
+                   tabPanel("About",
+                            fluidRow(
+                              column(10,
+                                     includeMarkdown("include.Rmd")
+                              )
+                            )
+                            
+                   )
 ))
