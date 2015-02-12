@@ -8,18 +8,16 @@
 
 shinyServer(function(input, output) {
   
-  set.seed(1)
+  
   
   observe({
+    set.seed(1)
     knn.pred <- knn(data.frame(train.X[,input$checkGroup]),
                     data.frame(test.X[,input$checkGroup]),
                     train.Y, k = input$k)
     
     
-    #   output$value <- renderText({ paste("Classification Error = ",ce(test.Y,knn.pred)) })
-    
-    
-    cat( length(knn.pred), length(test.Y)) 
+    output$value <- renderText({ paste("Classification Error = ",ce(test.Y,knn.pred)) })
     output$confusionMatrix <- renderDataTable({
       # modify this to show title - confusion matrix
       # /false positive/positive false negative/negative
@@ -27,8 +25,6 @@ shinyServer(function(input, output) {
       false.positive   <- sum(knn.pred == "negative" & test.Y == "positive")
       true.negative    <- sum(knn.pred == "negative" & test.Y == "negative")
       false.negative   <- sum(knn.pred == "positive" & test.Y == "negative")
-      output$value <- renderText({sum(true.positive, false.positive,
-                                      false.negative, true.negative)})
       row.names <- c("Prediction - FALSE", "Prediction - TRUE" )
       col.names <- c("Reference - FALSE", "Reference - TRUE")
       cbind(Outcome = row.names, as.data.frame(matrix( 

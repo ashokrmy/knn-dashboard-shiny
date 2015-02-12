@@ -8,11 +8,8 @@ library(shiny)
 library(Metrics)
 
 
-class.list <- c("numeric", "factor","factor",
-                "numeric","numeric", "factor", 
-                "factor", "numeric", "factor",
-                "numeric","factor",
-                "factor", "factor", "factor")
+
+# feature descriptions ####
 # -- 1. #3  (age)   integer
 # -- 2. #4  (sex)   factor    
 # -- 3. #9  (cp)    chest pain type - factor    
@@ -40,6 +37,14 @@ class.list <- c("numeric", "factor","factor",
 
 
 # read in data and preprocess ####
+
+class.list <- c("numeric", "factor","factor",
+                "numeric","numeric", "factor", 
+                "factor", "numeric", "factor",
+                "numeric","factor",
+                "factor", "factor", "factor")
+
+
 ds <- read.csv("processed.cleveland.data",  header = F, 
                colClasses = class.list)
 # add names to dataset
@@ -55,35 +60,35 @@ feature.list <- list("age" = "age", "sex" ="sex",
                      "restecg"="restecg","thalach"="thalach",
                      "exang"="exang","oldpeak"="oldpeak",
                      "slope"="slope","ca"="ca","thal"="thal")
-# change the class of all columns to numeric
+
+# keep an original copy of the data to retain classes
+# for displays
 original.ds <- ds
+
+# change the class of all columns to numeric
 ds <- as.data.frame(apply(ds, 2, as.numeric))
+
 # remove na/missing values (original data shows as ?)
 ds <- na.omit(ds)
 # all values of num > 0 are cases of heart disease 
 # as per the data descriptions at the uci repository
 ds$num[ds$num > 0] <- 1
 ds$num <- factor(ds$num, levels = c(0,1), labels = c("negative", "positive"))
+
 # standardize/normalize the data
+# for knn we want to ensure the distance is normalized for all 
+# features
+
+# standardize all point except the response variable
 standardized.X <- scale(ds[,-14])
 set.seed(55)
 
+# create training and test sets
 training.index <- createDataPartition(ds$num, p = .8,list = F)
 train.X <- standardized.X[training.index,]
 test.X  <- standardized.X[-training.index,]
 train.Y <- ds$num[training.index]
 test.Y <- ds$num[-training.index]
-
-
-
-# set theme for plots ####
-theme1 <- trellis.par.get()
-theme1$plot.symbol$col = rgb(.2, .2, .2, .4)
-theme1$plot.symbol$pch = 16
-theme1$plot.line$col = rgb(1, 0, 0, .7)
-theme1$plot.line$lwd <- 2
-trellis.par.set(theme1)
-
 
 # table settings ####
 
