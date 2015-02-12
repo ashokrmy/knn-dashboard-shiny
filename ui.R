@@ -54,19 +54,22 @@ shinyUI(navbarPage("KNN - UCI Heart Disease Data",
                     
                     ), 
                    tabPanel("EDA",
-                            sidebarLayout(
-                              sidebarPanel(
-                                selectInput('plot.type', 'Plot Type',
-                                            c("box", "density"),
-                                            selected = "density")
-                                
-                              ),
+
+                                plotOutput("distPlot"),
+                            hr(),
+                            
+                            fluidRow(
                               
-                              # Show a plot of the generated distribution
-                              mainPanel(
-                                plotOutput("distPlot")
+                              column(4, offset = 1,
+                                     selectInput( 'pairs.feature.A', 'Feature A', feature.list, selected = names(feature.list)[1]),
+                                     selectInput('pairs.feature.B', 'Feature B', feature.list,selected = names(feature.list)[2]),
+                                     selectInput( 'pairs.feature.C', 'Feature C', feature.list,selected = names(feature.list)[3])
+                                     
                               )
-                            )),
+                              
+                            )
+                            
+                  ),
                    
                    
                    tabPanel("GGVIS",
