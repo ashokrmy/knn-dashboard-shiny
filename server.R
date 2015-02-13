@@ -36,30 +36,44 @@ shinyServer(function(input, output) {
   })
   
   observe({
+    input_feature_x <- as.symbol(input$featureDisplay_x)
+    input_feature_y <- as.symbol(input$featureDisplay_y)
     
-    output$distPlot <- renderPlot({
-      
-      (ggpairs(original.ds[,c(input$pairs.feature.A,
-                              input$pairs.feature.B,
-                              input$pairs.feature.C,"num")],
-               upper = "blank", columns = 1:3,
-               lower = list(continuous = "points", combo = "dot"),
-               ,color = "num"))
-      
-      
-      
-    })
-  })
-  observe({output$feature <- renderText({ (input$featureDisplay) })
-           input_feature_x <- prop("x",as.symbol(input$featureDisplay_x))
-           input_feature_y <- prop("y",as.symbol(input$featureDisplay_y))
+#     output$distPlotA <- renderPlot({
+#     ggplot(ds, aes_string(input$featureDisplay_x, fill = "factor(num)")) + 
+#       geom_histogram(position = "dodge")
+#       
+#     })
+#       
+#     output$distPlotB <- renderPlot({
+#       ggplot(ds, aes_string(input$featureDisplay_y, fill = "factor(num)")) + 
+#         geom_histogram(position = "dodge")
+#     })
+
+#     output$feature <- renderText({ (input$featureDisplay) })
+  data.frame(ds) %>%
+    ggvis(x = input_feature_x, fill = ~factor(num ))%>%
+    group_by(factor(num)) %>%
+    layer_guess()%>%
+    set_options(width = 300, height = 200, resizable = F) %>%  
+    add_legend("fill", title = "Heart Disease" )%>%
+    bind_shiny("hist_x", "hist_x_ui")
+
+  data.frame(ds) %>%
+    ggvis(x = input_feature_y, fill = ~factor(num ))%>%
+    group_by(factor(num)) %>%  
+    layer_guess()%>%
+    set_options(width = 300, height = 200, resizable = F) %>%
+    add_legend("fill", title = "Heart Disease" )%>%
+    bind_shiny("hist_y", "hist_y_ui")
+
            
-           
-           data.frame(ds) %>%
-             ggvis(x = input_feature_x,input_feature_y, fill = ~factor(num ))%>%
-             layer_points()%>%
-             add_legend("fill", title = "Heart Disease" )%>%
-             bind_shiny("ggvis", "ggvis_ui")
+    data.frame(ds) %>%
+     ggvis(x = input_feature_x,y =input_feature_y, fill = ~factor(num ))%>%
+     layer_points()%>%
+     add_legend("fill", title = "Heart Disease" )%>%
+     set_options(width = 300, height = 200, resizable = F) %>%  
+     bind_shiny("scatter_2feature", "scatter_2feature_ui")
            
            
   })

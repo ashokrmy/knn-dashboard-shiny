@@ -39,40 +39,31 @@ shinyUI(navbarPage("KNN - UCI Heart Disease Data",
                    ), 
                    tabPanel("EDA",
                             
-                            plotOutput("distPlot"),
+                            fluidRow(
+                              column(4,uiOutput("hist_x_ui"),
+                                     ggvisOutput("hist_x")),
+                              
+                              column(4, uiOutput("scatter_2feature_ui"),
+                                     ggvisOutput("scatter_2feature")),
+                              column(4,uiOutput("hist_y_ui"),
+                                     ggvisOutput("hist_y"))
+                            ),
                             hr(),
+                            
                             
                             fluidRow(
                               
-                              column(4, offset = 1,
-                                     selectInput( 'pairs.feature.A', 'Feature A', feature.list, selected = names(feature.list)[1]),
-                                     selectInput('pairs.feature.B', 'Feature B', feature.list,selected = names(feature.list)[2]),
-                                     selectInput( 'pairs.feature.C', 'Feature C', feature.list,selected = names(feature.list)[3])
-                                     
-                              )
+#                            
+                              column(6,offset = 4, selectInput("featureDisplay_x", label = h3("Feature A"), 
+                                                    choices = feature.list),
+                                     selectInput("featureDisplay_y", label = h3("Feature B"), 
+                                                 choices = feature.list))
                               
                             )
                             
                    ),
                    
                    
-                   tabPanel("GGVIS",
-                            sidebarLayout(
-                              sidebarPanel(
-                                selectInput("featureDisplay_x", label = h3("X-Axis"), 
-                                            choices = feature.list),
-                                selectInput("featureDisplay_y", label = h3("Y-Axis"), 
-                                            choices = feature.list)
-                                
-                              ),
-                              
-                              # Show a plot of the generated distribution
-                              mainPanel(
-                                uiOutput("ggvis_ui"),
-                                ggvisOutput("ggvis"),
-                                verbatimTextOutput("feature")
-                              )
-                            )),
                    tabPanel("About",
                             fluidRow(
                               column(10,
