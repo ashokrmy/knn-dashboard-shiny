@@ -39,42 +39,36 @@ shinyServer(function(input, output) {
     input_feature_x <- as.symbol(input$featureDisplay_x)
     input_feature_y <- as.symbol(input$featureDisplay_y)
     
-#     output$distPlotA <- renderPlot({
-#     ggplot(ds, aes_string(input$featureDisplay_x, fill = "factor(num)")) + 
-#       geom_histogram(position = "dodge")
-#       
-#     })
-#       
-#     output$distPlotB <- renderPlot({
-#       ggplot(ds, aes_string(input$featureDisplay_y, fill = "factor(num)")) + 
-#         geom_histogram(position = "dodge")
-#     })
+    output$distPlotA <- renderPlot({
+    ggplot(ds, aes_string(input$featureDisplay_x, fill = "factor(num)")) + 
+      geom_histogram(position = "dodge") + 
+      labs(x = input$featureDisplay_x,
+           y = "Count") + fte_theme() +
+      scale_fill_manual(guide = F,values=c("#7A99AC", "#E4002B")) 
+      
+    })
+      
+    output$distPlotB <- renderPlot({
+      ggplot(ds, aes_string(input$featureDisplay_y, 
+                            fill = "factor(num)")) + 
+        geom_histogram(position = "dodge") +
+        labs(x = input$featureDisplay_y,
+             y = "Count") + fte_theme() +
+        scale_fill_manual(guide = F,values=c("#7A99AC", "#E4002B")) 
+      
+        
+    })
 
-#     output$feature <- renderText({ (input$featureDisplay) })
-  data.frame(ds) %>%
-    ggvis(x = input_feature_x, fill = ~factor(num ))%>%
-    group_by(factor(num)) %>%
-    layer_guess()%>%
-    set_options(width = 300, height = 200, resizable = F) %>%  
-    add_legend("fill", title = "Heart Disease" )%>%
-    bind_shiny("hist_x", "hist_x_ui")
-
-  data.frame(ds) %>%
-    ggvis(x = input_feature_y, fill = ~factor(num ))%>%
-    group_by(factor(num)) %>%  
-    layer_guess()%>%
-    set_options(width = 300, height = 200, resizable = F) %>%
-    add_legend("fill", title = "Heart Disease" )%>%
-    bind_shiny("hist_y", "hist_y_ui")
-
-           
-    data.frame(ds) %>%
-     ggvis(x = input_feature_x,y =input_feature_y, fill = ~factor(num ))%>%
-     layer_points()%>%
-     add_legend("fill", title = "Heart Disease" )%>%
-     set_options(width = 300, height = 200, resizable = F) %>%  
-     bind_shiny("scatter_2feature", "scatter_2feature_ui")
-           
+    output$ScatterPlot <- renderPlot({
+      ggplot(ds, aes_string(x = input$featureDisplay_x, 
+                            y = input$featureDisplay_y, 
+                            color = "factor(num)")) + 
+        geom_point(size = 4) + 
+        labs(x = input$featureDisplay_x,
+             y = input$featureDisplay_y) +
+        fte_theme() + 
+        scale_color_manual(name = "Heart Disease",values=c("#7A99AC", "#E4002B")) 
+    })          
            
   })
   

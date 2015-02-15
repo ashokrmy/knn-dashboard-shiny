@@ -7,8 +7,8 @@
 library(shiny)
 
 
-shinyUI(navbarPage("KNN - UCI Heart Disease Data",
-                   tabPanel("Results",
+shinyUI(navbarPage("",
+                   tabPanel("Classifier",
                             
                             # Application title
                             titlePanel("Classification of Heart Disease w/KNN"),
@@ -22,52 +22,62 @@ shinyUI(navbarPage("KNN - UCI Heart Disease Data",
                                             max = 20,
                                             value = 5),
                                 checkboxGroupInput("checkGroup", label = h3("Dataset Features"), 
-                                                   choices = feature.list, inline = T,
+                                                   choices = feature.list, inline = F,
                                                    selected = names(feature.list))
                                 
                               ),
                               
-                              # Show a plot of the generated distribution
+                              # Display KNN results
                               mainPanel(
                                 dataTableOutput('confusionMatrix'),
-                                p('K-Nearest Neighbors...'),
-                                verbatimTextOutput("value")
+                                verbatimTextOutput("value"),
+                                includeMarkdown("ShinyAppDescription.Rmd")
                                 
                               )
                             )
                             
                    ), 
-                   tabPanel("EDA",
-                            
-                            fluidRow(
-                              column(4,uiOutput("hist_x_ui"),
-                                     ggvisOutput("hist_x")),
+                   tabPanel("Visualize Features",
+                            fluidRow(                           
+                              column(4, selectInput("featureDisplay_x", 
+                                                    label = h3("X-Axis Feature"), 
+                                                    choices = feature.list,
+                                                    selected = feature.list[1])),
+                              column(4, selectInput("featureDisplay_y", 
+                                                               label = h3("Y-Axis Feature"), 
+                                                               choices = feature.list,
+                                                               selected = feature.list[2]))
                               
-                              column(4, uiOutput("scatter_2feature_ui"),
-                                     ggvisOutput("scatter_2feature")),
-                              column(4,uiOutput("hist_y_ui"),
-                                     ggvisOutput("hist_y"))
                             ),
-                            hr(),
-                            
-                            
                             fluidRow(
-                              
-#                            
-                              column(6,offset = 4, selectInput("featureDisplay_x", label = h3("Feature A"), 
-                                                    choices = feature.list),
-                                     selectInput("featureDisplay_y", label = h3("Feature B"), 
-                                                 choices = feature.list))
-                              
+                              column(4,
+                                     plotOutput("distPlotA")
+                                     ),                              
+                              column(4,
+                                     plotOutput("distPlotB")      
+                              ),
+                              column(4,
+                                     plotOutput("ScatterPlot")
+                              )
                             )
+                                                  
                             
                    ),
                    
                    
-                   tabPanel("About",
+                   tabPanel("Feature Descriptions",
                             fluidRow(
                               column(10,
                                      includeMarkdown("include.Rmd")
+                              )
+                            )
+                            
+                   ),
+                   
+                   tabPanel("References",
+                            fluidRow(
+                              column(10,
+                                     includeMarkdown("references.Rmd")
                               )
                             )
                             
