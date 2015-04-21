@@ -63,7 +63,7 @@ shinyServer(function(input, output) {
       ggplot(ds, aes_string(x = input$featureDisplay_x, 
                             y = input$featureDisplay_y, 
                             color = "factor(num)")) + 
-        geom_point(size = 4) + 
+        geom_point(size = 4, position = position_jitter(w = 0.1, h = 0.1)) + 
         labs(x = input$featureDisplay_x,
              y = input$featureDisplay_y) +
         fte_theme() + 

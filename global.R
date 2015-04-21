@@ -1,6 +1,4 @@
 rm(list = ls())
-library(ggvis)
-library(GGally)
 library(dplyr)
 library(class)
 library(caret)

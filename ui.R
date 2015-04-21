@@ -4,9 +4,6 @@
 # http://shiny.rstudio.com
 #
 
-library(shiny)
-
-
 shinyUI(navbarPage("",
                    tabPanel("Classifier",
                             
